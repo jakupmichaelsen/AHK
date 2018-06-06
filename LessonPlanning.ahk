@@ -1,10 +1,11 @@
 #InstallKeybdHook
 #SingleInstance, force
 SendMode Input
-TrayTip, %A_ScriptName%, Script loaded
-#Include, %A_ScriptDir%
+IniRead, ahk, splashUI.ini, paths, ahk
 
-txtRadioOptions("D:\Dropbox\Code\AHK\lessonPlanning\AFM.md")
+TrayTip, %A_ScriptName%, Script loaded
+
+txtRadioOptions("%ahk%\lessonPlanning\AFM.md")
 splashUI("r", "Faglige mål", options)
 SendMode, Play 
 if choice <>

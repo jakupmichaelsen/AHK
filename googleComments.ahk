@@ -3,7 +3,7 @@
 #SingleInstance, force
 #Hotstring, * ?
 AutoReload()
-Menu, Tray, Icon, D:\Dropbox\Code\AHK\icons\g.ico
+Menu, Tray, Icon, %A_ScriptDir%\icons\g.ico
 
 SendMode, InputThenPlay
 try

@@ -1,4 +1,5 @@
 #SingleInstance, force 
+IniRead, ahk, splashUI.ini, paths, ahk
 
 SplashImageGUI(Picture, X, Y, Duration, Transparent = true)
 {
@@ -23,9 +24,9 @@ splashUI("r", PDF-XChange|Word, "PDF-XChange or Word?")
 if choice <>
 {
 	if choice = 1
-		SplashImage1 = D:\Dropbox\Code\AHK\splashUI\splashImage1.png
+		SplashImage1 = %ahk%\images\PDF-XChange.png
 	if choice = 2
-		SplashImage2 = D:\Dropbox\Code\AHK\splashUI\splashImage2.png
+		SplashImage2 = %ahk%\images\Word.png
 }
 
 Ins::

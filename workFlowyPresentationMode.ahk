@@ -1,7 +1,7 @@
 #SingleInstance, force
 TrayTip, %A_ScriptName%, Script loaded
 AutoReload()
-Menu, Tray, Icon, D:\Dropbox\Code\AHK\icons\P.ico
+Menu, Tray, Icon, %A_ScriptDir%\icons\P.ico
 Progress, B0 X%pX% Y%pY% ZH0 CTFF9900 CW221A0F, WF PRESENTATION MODE
 ; Clicker in presentation mode 
 SetTitleMatchMode, 2
@@ -40,7 +40,7 @@ Suspend:
 	}
 	Else
 	{
-		Menu, Tray, Icon, D:\Dropbox\Code\AHK\icons\Blank.ico
+		Menu, Tray, Icon, %A_ScriptDir%\icons\Blank.ico
 		Progress, Hide
 	}
 	Return

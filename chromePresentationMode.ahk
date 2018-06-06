@@ -1,9 +1,10 @@
 #InstallKeybdHook
 #SingleInstance, force
 #Hotstring, * ?
+
 IniRead, browser, splashUI.ini, Browser, path
 SendMode Input
-Menu, Tray, Icon, D:\Dropbox\Code\AHK\icons\C.ico
+Menu, Tray, Icon, %A_ScriptDir%\icons\C.ico
 TrayTip, %A_ScriptName%, Script loaded
 AutoReload()
 #IfWinActive, ahk_class Chrome_WidgetWin_1

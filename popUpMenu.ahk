@@ -11,7 +11,7 @@ Menu, TopMenu, Add, Copy Filenames, copyFilename
 Menu, TopMenu, Add, Kongruensfejl, Kongruensfejl
 Menu, TopMenu, Add, Grading Papers, gradingpapers
 gradingpapers:
-    Run, D:\Dropbox\Code\AHK\GradingPapers.ahk
+    Run, GradingPapers.ahk
     Return
 
 

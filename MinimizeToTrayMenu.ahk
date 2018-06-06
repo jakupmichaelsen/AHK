@@ -17,7 +17,7 @@
 ; CONFIGURATION SECTION: Change the below values as desired.
 
 ; Icon 
-Menu, Tray, Icon, D:\Dropbox\Code\AHK\icons\M.ico
+Menu, Tray, Icon, %A_ScriptDir%\icons\M.ico
 
 ; This is the maximum number of windows to allow to be hidden (having a
 ; limit helps performance):
