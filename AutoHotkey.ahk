@@ -13,7 +13,7 @@ SendMode, Input
 SetTitleMatchMode, 2 
 
 run %A_ScriptDir%\WinTrigger.ahk
-run %A_ScriptDir%\TextExpansions.ahk
+run %ahk%\TextExpansions.ahk
 run %A_ScriptDir%\functionKeys.ahk
 run %A_ScriptDir%\centerMouse.ahk
 run %ahk%\WindowPadX\WindowPadX.ahk
