@@ -14,6 +14,7 @@ Esc::
 	ExitApp
 F1::
 folder := Explorer_GetPath()
+
 Loop, %folder%\*.*
 {
 	SplitPath, A_LoopFileFullPath, OutFileName, OutDir, OutExtension, OutNameNoExt, OutDrive

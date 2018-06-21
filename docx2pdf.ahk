@@ -1,15 +1,18 @@
 global oWord := ComObjCreate("Word.Application") 
 
 
-FileSelectFolder, Folder, , , Select the root folder containing your Word documents
-FileCreateDir, %Folder%\pdf
-mergeDocs(Folder)
-oWord.quit
-Msgbox Done!
-Run, %Folder%
-ExitApp, 
+Progress, CT%header_color% CW%background% B1 Y0 ZH0 CTFF0000, Navigate to the root folder containing your DOCXs and press F1 to convert to PDF (ESC to cancel)
 
-mergeDocs(Folder)
+Esc::ExitApp
+F1::
+	Folder := Explorer_GetPath()
+	FileCreateDir, %Folder%\pdf
+	convert(Folder)
+	oWord.quit
+	Msgbox Done!
+	ExitApp
+
+convert(Folder)
 {
 	global
 	loop, %Folder%\*.docx
@@ -20,13 +23,12 @@ mergeDocs(Folder)
   			Continue
   		Else
   		{
-	 		ToolTip, Converting %A_LoopFileName%, 0, 0
+			splashNotify("Converting: " . A_LoopFileName) 
 	 		oWord.Application.Documents.Open(A_LoopFileFullPath)
 	 		SplitPath, A_LoopFileFullPath, OutFileName, OutDir, OutExtension, OutNameNoExt, OutDrive
 		 	oWord.Application.ActiveDocument.SaveAs2(Folder . "\pdf\" . OutNameNoExt . ".pdf", 17) 
 			oWord.Application.ActiveDocument.Close()
 		}
-	Sleep 5000
  	}
 }
 

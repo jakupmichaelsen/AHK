@@ -1,8 +1,10 @@
+#NoEnv ; Significantly improves performance by not looking up empty variables as environmental variables 
 #InstallMouseHook
 #InstallKeybdHook
 #SingleInstance, force
-#Hotstring, * ?
 #NoTrayIcon
+
+splashNotify(A_ScriptName " reloaded") 
 IniRead, browser, splashUI.ini, paths, browser
 IniRead, onedrive, splashUI.ini, paths, onedrive
 IniRead, user, splashUI.ini, paths, user
@@ -128,10 +130,10 @@ openFile.exe
 */
 
 #o::run %A_ScriptDir%\openFile.ahk ; run Windows open file dialog window
-#IfWinActive, Select File - openFile.ahk ahk_class #32770
-Tab::Down
-<::\
-#IfWinActive
+; #IfWinActive, Select File - openFile.ahk ahk_class #32770
+; Tab::Down
+; <::\
+; #IfWinActive
 
 /*
 
@@ -151,33 +153,22 @@ Tab::Down
 	Send, +{End}{Delete}
 	Return
 
-; #IfWinNotActive, ahk_class PXE:{C5309AD3-73E4-4707-B1E1-2940D8AF3B9D}
-#IfWinNotActive, ahk_class PX_WINDOW_CLASS
-; +^d::
-; 	Send, {Home}
-; 	Send, +{End}
-; 	ClipSaved = %ClipboardAll%  ; Save clipboard
-; 	Clipboard = ; Clear clipboard 
-; 	Send, ^c 
-; 	ClipWait 
-; 	Send, {End}{Enter}
-; 	Send, ^v 
-; 	Sleep 100
-; 	Clipboard = %ClipSaved%  ; Restore clipboard
-; 	Return 
 
-
+#If !WinActive("ahk_class PX_WINDOW_CLASS") AND !WinActive("ahk_exe PDFXEdit.exe")
 +^d::
-	Send, {Home}
-	Send, +{End}{Delete}
 	ClipSaved = %ClipboardAll%  ; Save clipboard
 	Clipboard = ; Clear clipboard 
+	Sleep, 100 
+	Send, {Home}
+	Sleep, 100 
+	Send, +{End}
+	Sleep, 100 
 	Send, ^c
-	ClipWait
 	Send, {End}
 	Sleep, 100 
 	Send, {Enter}
 	Send, ^v
+	Sleep, 100
 	Clipboard = %ClipSaved%  ; Restore clipboard
 	Return
 
@@ -384,40 +375,7 @@ Alt & Right::
 Browser_Back::Esc
 #IfWinActive
 
-:*:\spw1::
-	Send {Enter}
-	run, splashUI_wTop.ahk
-	run, splashUI_wBottom.ahk
-	run, splashUI_wLeft.ahk
-	run, splashUI_wRight.ahk
-	Return
-:*:\spw0::
-	Send {Enter}
-	WinClose, splashUI_wTop.ahk
-	WinClose, splashUI_wBottom.ahk
-	WinClose, splashUI_wLeft.ahk
-	WinClose, splashUI_wRight.ahk
-	Return
 
-:*:\spx1::
-	Send {Enter}
-	run rundll32.exe shell32.dll Options_RunDLL 1
-	WinWaitActive Egenskaber for Proceslinje og menuen Start
-	Send, s{Enter}
-	run, splashUI_Top.ahk
-	run, splashUI_Bottom.ahk
-	run, splashUI_Left.ahk
-	run, splashUI_Right.ahk
-	Return
-
-:*:\spx0::
-	WinClose, splashUI_Top.ahk
-	WinClose, splashUI_Bottom.ahk
-	WinClose, splashUI_Left.ahk
-	WinClose, splashUI_Right.ahk
-	Send {Enter}
-	run rundll32.exe shell32.dll Options_RunDLL 1
-	WinWaitActive Egenskaber for Proceslinje og menuen Start
 /*
  /$$      /$$ /$$$$$$  /$$$$$$   /$$$$$$
 | $$$    /$$$|_  $$_/ /$$__  $$ /$$__  $$
@@ -431,69 +389,7 @@ Browser_Back::Esc
 
 */
 
-; 	^!t::Run, %onedrive%\Apps\Sublime Text Build 3083\subl.exe %A_ScriptDir%\TextExpansions.ahk
-; ^!a::Run, %onedrive%\Apps\Sublime Text Build 3083\subl.exe %A_ScriptDir%\AutoHotkey.ahk
-; ^!g::Run, %onedrive%\Apps\Sublime Text Build 3083\subl.exe %A_ScriptDir%\GradingPapers.ahk
-; ^!f::Run, %onedrive%\Apps\Sublime Text Build 3083\subl.exe %A_ScriptDir%\functionKeys.ahk
 
-::\f11::
-	splashText("Chrome app mode", 10, "Enter URL to run in application mode", clipboard)  
-	if input <>
-		run  %browser% --app=%input%
-	Return
-::\blooms:: 
-	run %A_ScriptDir%\blooms.ahk
-	Return
-::\afm::
-	txtList("%A_ScriptDir%\lessonPlanning\AFM.md")
-	splashRadio("Faglige mål", options)
-	; SendMode, Play 
-	if choice <>
-		Send %choice%
-	Return 
-::\aks::
-	txtList("%A_ScriptDir%\lessonPlanning\AKS.md")
-	splashRadio("Kernestof", options)
-	; SendMode, Play 
-	if choice <>
-		Send %choice%
-	Return 
-	
-#n::  ; Evernote: open notebook
-	if input <>
-	Send, +#f
-	WinWaitActive, ahk_class ENMainFrame
-	IfInString, input, %A_Space%
-	{
-		Send, notebook:"%input%"
-		Return
-	}
-	Else
-	{
-		Send, notebook:%input%
-		Return
-	}
-	Return
-
-
-
-/*
-^!o:: ; Search ordbog.gyldendal.dk
-	splashText("Gyldendals (EN-DA)", 2)
-	if input <> ; Run only if input isn't empty
-		splashRadio("Vælg ordklasse", "&sb.|&vb.|&adj.|a&dv.|pr&on.|&præp.|&konj.")
-	if choice <> ; Run only if choice isn't empty
-		Run, % "http://ordbog.gyldendal.dk/sitecore/content/Ordbog/Home/Opslag/Resultat.aspx?q=" . input . "&lcode=ENDA&pos=" . choice
-	Return
-*/
-
-
-; +^!k:: ; WinKill, A
-; KILL UNRESPONSIVE APPLICATIONS
-;	run taskkill /F /FI "STATUS eq NOT RESPONDING"
-;	Sleep, 500
-;	TrayTip, AutoHotkey, Unresponsive apps killed
-;	return
 #IfWinNotActive, ahk_class OpusApp 
 ^Backspace:: Send ^+{Left}{Backspace}
 ^Delete:: Send ^+{Right}{Delete}
@@ -610,35 +506,6 @@ Browser_Back::Esc
 
 */
 
-#IfWinActive, ahk_class Chrome_WidgetWin_1
-:*:\go::
-	; Send, +^j 
-	; Sleep 800 
-	Send, document.querySelector('.pick-attachment').click();{Enter}
-	; Sleep 500
-	; Send, +^j 
-	Return 
-; F10 to search page 
-; F10::^f
-
-; Change Chrome spell check language
-::\gen:: ; English
-	Send, {AppsKey}
-	Sleep, 100
-	Send, ii{Enter}e
-	Return
-::\gda:: ; Danish
-	Send, {AppsKey}
-	Sleep, 100
-	Send, ii{Enter}d
-	Return
-::\gfa:: ; Faroese
-	Send, {AppsKey}
-	Sleep, 100
-	Send, ii{Enter}f
-	Return
-
-#IfWinActive
 
 
 /*
@@ -657,16 +524,8 @@ Browser_Back::Esc
 */
 
 
-; #IfWinActive, ahk_class CabinetWClass ; Goto and highlight path in Windows explorer
-; {
-; 	F4::
-; 		Send, {F4}
-; 		Sleep 100
-; 		Send, ^a
-; 		Return
-; }
+#e::run %user%\AppData\Roaming\Microsoft\Windows\Recent
 
-; #e::run %user%\AppData\Roaming\Microsoft\Windows\Recent
 #IfWinActive, ahk_class CabinetWClass
 !d::
 	Send, {F4}
@@ -841,7 +700,8 @@ TrayTip, AutoHotkey, Hidden files toggled
 
 
 !Space::ComObjActive("Word.Application").Selection.Words(1).Select ; Select the current word
-+Space:: ; Select sentence 
+
++^Space:: ; Select sentence 
 	oWord := ComObjActive("Word.Application")
 	oWord.Selection.MoveLeft(Unit:=3)  ; Move to start of sentence
 	oWord.Selection.ExtendMode := True ; Turns on extend mode 
@@ -852,22 +712,29 @@ TrayTip, AutoHotkey, Hidden files toggled
 +^F7::ComObjActive("Word.Application").Selection.LanguageID := 1024 ; No proofing
 +F9::ComObjActive("Word.Application").Selection.Sort 
 
++F11:: ; Full screen 
+	aW := ComObjActive("Word.Application").ActiveWindow
+	aW.View.FullScreen := ! aW.View.FullScreen
+	Return 
+
 F11:: ; Distraction free 
 	WinMaximize, A
-	oWord := ComObjActive("Word.Application")
-	oWord.Application.ScreenUpdating := True
-	oWord.ActiveWindow.View.DisplayPageBoundaries := !oWord.ActiveWindow.View.DisplayPageBoundaries
-	oWord.ActiveWindow.DocumentMap := "False" ;!oWord.ActiveWindow.DocumentMap
-	oWord.ActiveWindow.ActivePane.DisplayRulers := "False" ;!oWord.ActiveWindow.ActivePane.DisplayRulers
-	if oWord.ActiveWindow.UsableHeight < 550 ; The UsableHeight is greater when the ribbon is hidden
-		oWord.ActiveWindow.ToggleRibbon
+	ComObjActive("Word.Application").Application.ScreenUpdating := True
+
+	aW := ComObjActive("Word.Application").ActiveWindow
+	aW.View.Type := 3 ; wdPrintView = 3
+	aW.View.DisplayPageBoundaries := !aW.View.DisplayPageBoundaries
+	aW.DocumentMap := "False" ; !aW.DocumentMap
+	aW.ActivePane.DisplayRulers := "False" ; !aW.ActivePane.DisplayRulers
+	if aW.UsableHeight < 550 ; The UsableHeight is greater when the ribbon is hidden
+		aW.ToggleRibbon
 	Return
 
 
-!Up::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,2,0,0)
-!Down::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(2,0,0,0)
-!Left::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,0,0,2)
-!Right::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,0,2,0)
+!Up::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,1,0,0)
+!Down::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(1,0,0,0)
+!Left::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,0,0,1)
+!Right::ComObjActive("Word.Application").ActiveDocument.ActiveWindow.SmallScroll(0,0,1,0)
 
 ^!SC00C::ComObjActive("Word.Application").Selection.Font.Grow
 ^!SC035::ComObjActive("Word.Application").Selection.Font.Shrink
@@ -900,8 +767,8 @@ F11:: ; Distraction free
 
 Ins::
 +^v:: ; Paste as plain text 
-	oWord := ComObjActive("Word.Application") 
-	oWord.Selection.PasteAndFormat(22)
+	Clipboard = %Clipboard% ; Trim leading and trailing spaces. Remove formatting. 
+	Send, ^v
 	Return
 
 Browser_Back::Esc
@@ -916,17 +783,24 @@ Browser_Back::Esc
 ^SC00C:: ; Zoom in
 	oWord := ComObjActive("Word.Application")
 	myZoom := oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage
-	oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage := myZoom + 20
+	oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage := myZoom + 5
 		Return
 ^SC035:: ; Zoom out
 	oWord := ComObjActive("Word.Application")
 	myZoom := oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage
-	oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage := myZoom - 20
+	oWord.ActiveDocument.ActiveWindow.View.Zoom.Percentage := myZoom - 5
 		Return
 ^+i:: ; Insert file
 	FileSelectFile, file
+	Loop, %file%
+		extension := A_LoopFileExt
 	if ErrorLevel <> 1
-		ComObjActive("Word.Application").Application.Selection.InsertFile(file)
+	{
+		if extension = png
+			ComObjActive("Word.Application").Application.Selection.InlineShapes.AddPicture(file)
+		Else
+			ComObjActive("Word.Application").Application.Selection.InsertFile(file)	
+	}
 	Return
 
 ; ^Space::ComObjActive("Word.Application").Selection.Tables(1).Select
@@ -996,8 +870,9 @@ Browser_Back::Esc
     Else
         run %onedrive%\Apps\Sublime Text Build 3143 x64\sublime_text.exe
     WinWaitActive, ahk_class PX_WINDOW_CLASS
+	Sleep 200
 	Send ^n
-	Sleep 100
+	Sleep 200
 	Send ^v
 	Return
 
@@ -1057,8 +932,15 @@ MButton::AppsKey
 |__/  \__/ \_______/ \____  $$|_______/  \______/  \_______/|__/       \_______/
 										 /$$  | $$
 										|  $$$$$$/
+
 										 \______/
+=== Keyboard ===
 */
+
+
+#If GetKeyState("CapsLock", "T")
+~Tab::Down 
+#If 
 
 
 /*
@@ -1074,11 +956,11 @@ MButton::AppsKey
 
 === Windows === 
 */
-#IfWinActive, ahk_class #32770
-; #If WinActive("Gem som ahk_class #32770") || WinActive("Save File As ahk_class #32770")
-Tab::Send, {Down}
-<::\
-#IfWinActive
+; #IfWinActive, ahk_class #32770
+; ; #If WinActive("Gem som ahk_class #32770") || WinActive("Save File As ahk_class #32770")
+; Tab::Send, {Down}
+; <::\
+; #IfWinActive
 
 +!^b::WinSet, Style, ^0xC00000, A
 +!^w::WinSet, Style, ^0x840000, A

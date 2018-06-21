@@ -1,7 +1,7 @@
 global oWord := ComObjCreate("Word.Application") 
 
 
-Progress, CT%header_color% CW%background% B1 Y0 ZH0 CTFF0000, Navigate to the root folder containing your PDFs and press F1 to convert to .docx (ESC to cancel)
+Progress, CT%header_color% CW%background% B1 Y0 ZH0 CTFF0000, Navigate to the root folder containing your PDFs and press F1 to convert to DOCX (ESC to cancel)
 
 Esc::ExitApp
 F1::
@@ -31,7 +31,6 @@ convert(Folder)
 			oWord.Application.ActiveDocument.Close()
 			FileMove, %A_LoopFileFullPath%, %Folder%\pdf
 		}
-	; Sleep 5000
  	}
 }
 

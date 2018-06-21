@@ -72,8 +72,16 @@ blink:
 ; r::WheelUp
 Left::^Left
 Right::^Right
-Tab::Down 
-<::\
+Tab::Gosub, nextParagraph
++Tab::Gosub, lastTable
+
+
+lastTable:
+	lastTable := oWord.ActiveDocument.Tables.Count 
+	oWord.ActiveDocument.Tables(lastTable).Select
+	Return 
+
+
 
 nextParagraph:
 	if WinActive("ahk_class OpusApp")
