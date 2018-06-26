@@ -893,18 +893,20 @@ Browser_Back::Esc
 */
 
 MButton::AppsKey
-!WheelDown::Send ^{Tab} ; Change tabs with Win key + Wheel
-!WheelUp::Send ^+{Tab} ; Change tabs with Win key+ Wheel
-~LButton & RButton::SendInput {LWin down}{Tab}{LWin up} ; Send {Browser_Back} 
-~RButton::
-	if (A_PriorHotkey <> "~RButton" or A_TimeSincePriorHotkey > 400)
-	{
-			; Too much time between presses, so this isn't a double-press.
-			KeyWait, RButton
-			return
-	}
-	Send {Browser_Forward}} 
-	Return
+~RButton & WheelDown::Send ^{Tab} ; Change tabs
+~RButton & WheelUp::Send ^+{Tab} ; Change tabs
+!WheelDown::Send ^{Tab} ; Change tabs
+!WheelUp::Send ^+{Tab} ; Change tabs
+; ~LButton & RButton::SendInput {LWin down}{Tab}{LWin up} ; Send {Browser_Back} 
+; ~RButton::
+; 	if (A_PriorHotkey <> "~RButton" or A_TimeSincePriorHotkey > 400)
+; 	{
+; 			; Too much time between presses, so this isn't a double-press.
+; 			KeyWait, RButton
+; 			return
+; 	}
+; 	Send {Browser_Forward} 
+; 	Return
 
 #IfWinActive, ahk_class Chrome_WidgetWin_1
 +WheelLeft::
