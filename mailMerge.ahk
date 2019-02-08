@@ -1,4 +1,3 @@
-
 ; Word mail merge - from active Excel sheet to individual docx files. 
 ; Just add bookmarks in your Word template where you want the data to appear, and name them according to the Excel data headers.
 ; Using bookmarks avoids the 256 character limit of Office' search-and-replace function 

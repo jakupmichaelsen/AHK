@@ -34,7 +34,7 @@ run %A_ScriptDir%\openZips.ahk
 | $$  \__/| $$$$$$$$| $$ \ $$ \ $$  /$$$$$$$| $$  \ $$| $$  \ $$| $$| $$  \ $$| $$  \ $$|  $$$$$$
 | $$      | $$_____/| $$ | $$ | $$ /$$__  $$| $$  | $$| $$  | $$| $$| $$  | $$| $$  | $$ \____  $$
 | $$      |  $$$$$$$| $$ | $$ | $$|  $$$$$$$| $$$$$$$/| $$$$$$$/| $$| $$  | $$|  $$$$$$$ /$$$$$$$/
-|__/       \_______/|__/ |__/ |__/ \_______/| $$____/ | $$____/ |__/|__/  |__/ \____  $$|_______/
+|__/       \_______/|__/ |__/ |__/ _______/| $$____/ | $$____/ |__/|__/  |__/ \____  $$|_______/
 																						| $$      | $$                     /$$  \ $$
 																						| $$      | $$                    |  $$$$$$/
 																						|__/      |__/                     \______/
@@ -78,11 +78,11 @@ PgUp::PgDn
 | $$$/ \  $$$| $$  | $$| $$      | $$_  $$ | $$      | $$| $$  | $$| $$ | $$ | $$| $$  | $$
 | $$/   \  $$|  $$$$$$/| $$      | $$ \  $$| $$      | $$|  $$$$$$/|  $$$$$/$$$$/|  $$$$$$$
 |__/     \__/ \______/ |__/      |__/  \__/|__/      |__/ \______/  \_____/\___/  \____  $$
-																																									/$$  | $$
-																																								 |  $$$$$$/
-																																									\______/
-WorkFlowy
-*/
+																						 $$
+																					$$$$$$/
+																					\___/
+=== WorkFlowy
+*/<
 ; 
 ; #IfWinActive, WorkFlowy ahk_class Chrome_WidgetWin_1
 ; PgDn::+!0
@@ -145,9 +145,7 @@ openFile.exe
  /$$  \ $$ /$$  \ $$   | $$      | $$         | $$     | $$  | $$| $$  | $$| $$        | $$ /$$| $$| $$  | $$| $$  | $$ /$$__  $$| $$| $$  | $$ /$$| $$  | $$
 |  $$$$$$/|  $$$$$$/   | $$      | $$         | $$     |  $$$$$$/| $$  | $$|  $$$$$$$  |  $$$$/| $$|  $$$$$$/| $$  | $$|  $$$$$$$| $$| $$  |  $$$$/|  $$$$$$$
  \______/  \______/    |__/      |__/         |__/      \______/ |__/  |__/ \_______/   \___/  |__/ \______/ |__/  |__/ \_______/|__/|__/   \___/   \____  $$
-																																																																										/$$  | $$
-																																																																									 |  $$$$$$/
-																																																																										\______/
+
 */
 +^Delete::
 	Send, +{End}{Delete}
@@ -169,7 +167,7 @@ openFile.exe
 	Send, {Enter}
 	Send, ^v
 	Sleep, 100
-	Clipboard = %ClipSaved%  ; Restore clipboard
+	Clipboard = %ClipSaved%  ; Restoreore clipboard
 	Return
 
 
@@ -407,6 +405,8 @@ Browser_Back::Esc
 			TrayTip, ,Windows Explorer killed
 
 		}
+		if input = w
+			ComObjActive("Word.Application").Application.Quit(SaveChanges := 0)
 		Else
 		{
 			Run, taskkill /F /IM %input%*,,Hide
@@ -696,6 +696,23 @@ TrayTip, AutoHotkey, Hidden files toggled
 
 #IfWinActive, ahk_class OpusApp 
 
++^n::ComObjActive("Word.Application").NewWindow
+!q:: ; Activate other document window 
+	oWord := ComObjActive("Word.Application")
+	if oWord.ActiveDocument.Windows.Count > 1
+	{
+
+		caption := oWord.ActiveWindow.Caption
+		StringRight, wIndex, caption, 1
+		if wIndex = 1
+    		oWord.ActiveDocument.Windows(2).Activate
+		if wIndex = 2
+    		oWord.ActiveDocument.Windows(1).Activate
+	}
+    Else 
+    	Send {Esc}
+    Return 
+
 +!^0::ComObjActive("Word.Application").Selection.Style := ComObjActive("Word.Application").ActiveDocument.Styles("Normal") ; Apply "Normal" style
 
 
@@ -710,7 +727,7 @@ TrayTip, AutoHotkey, Hidden files toggled
 	Return 
 	
 +^F7::ComObjActive("Word.Application").Selection.LanguageID := 1024 ; No proofing
-+F9::ComObjActive("Word.Application").Selection.Sort 
+F9::ComObjActive("Word.Application").Selection.Sort 
 
 +F11:: ; Full screen 
 	aW := ComObjActive("Word.Application").ActiveWindow
@@ -773,8 +790,10 @@ Ins::
 
 Browser_Back::Esc
 
-; !+e::editComment() ; Edit last comment
-
++!e::
+	aDoc :=ComObjActive("Word.Application").ActiveDocument
+	aDoc.Comments(aDoc.Comments.Count).Edit
+	Return
 	
 ^0:: ; Reset zoom
 	oWord := ComObjActive("Word.Application")
@@ -940,9 +959,9 @@ MButton::AppsKey
 */
 
 
-#If GetKeyState("CapsLock", "T")
-~Tab::Down 
-#If 
+; #If GetKeyState("CapsLock", "T")
+; ~Tab::Down 
+; #If 
 
 
 /*
