@@ -1,14 +1,28 @@
 IniRead(){
 	global
-	IniRead, background, %A_ScriptDir%\splashUI.ini, colors, background
+	iniDir = D:\GitHub\AHK
+
+; === paths === 
+	IniRead, browser, %iniDir%\splashUI.ini, paths, browser
+	IniRead, onedrive, %iniDir%\splashUI.ini, paths, onedrive
+	IniRead, ahk, %iniDir%\splashUI.ini, paths, ahk
+	IniRead, user, %iniDir%\splashUI.ini, paths, user
+	IniRead, git, %iniDir%\splashUI.ini, paths, git
+
+; === [colors ===
+	IniRead, background, %iniDir%\splashUI.ini, colors, background
+	IniRead, font_color, %iniDir%\splashUI.ini, colors, font_color
+	IniRead, header_color, %iniDir%\splashUI.ini, colors, header_color
+	; Trim "#"":
 	StringTrimLeft, background, background, 1
-	IniRead, header_color, %A_ScriptDir%\splashUI.ini, colors, header_color
 	StringTrimLeft, header_color, header_color, 1
-	IniRead, font_color, %A_ScriptDir%\splashUI.ini, colors, font_color
 	StringTrimLeft, font_color, font_color, 1
-	IniRead, header, %A_ScriptDir%\splashUI.ini, fonts, header
-	IniRead, font, %A_ScriptDir%\splashUI.ini, fonts, font
-	IniRead, typingFont, %A_ScriptDir%\splashUI.ini, fonts, typingFont
-	IniRead, size, %A_ScriptDir%\splashUI.ini, fonts, size
-	IniRead, style, %A_ScriptDir%\splashUI.ini, fonts, style
+
+; === fonts ===
+	IniRead, header, %iniDir%\splashUI.ini, fonts, header
+	IniRead, font, %iniDir%\splashUI.ini, fonts, font
+	IniRead, typingFont, %iniDir%\splashUI.ini, fonts, typingFont
+	IniRead, size, %iniDir%\splashUI.ini, fonts, size
+	IniRead, big, %iniDir%\splashUI.ini, fonts, big
+	IniRead, style, %iniDir%\splashUI.ini, fonts, style
 }

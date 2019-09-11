@@ -1,3 +1,5 @@
+#Include D:\GitHub\AHK\lib\IniRead.ahk
+
 splashList(text, list, sorted=1, fontSize = 12){ ; Pass help text and |-separated list
   global
   choice =  ; Clear previous choices

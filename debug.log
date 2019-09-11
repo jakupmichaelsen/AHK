@@ -1,5 +1,0 @@
-[0814/135754.267:WARNING:minidump_to_upload_parameters.cc(66)] duplicate annotation name metrics_client_id, discarding value 205d6d2e79594dc0adbeaf00a189816d
-[1001/092943.319:WARNING:minidump_to_upload_parameters.cc(66)] duplicate annotation name metrics_client_id, discarding value 205d6d2e79594dc0adbeaf00a189816d
-[1113/212514.640:ERROR:settings.cc(319)] Settings magic is not 1129342067
-[1123/085932.204:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0
-[0211/142712.570:ERROR:file_io.cc(89)] ReadExactly: expected 36, observed 0

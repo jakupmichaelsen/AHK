@@ -7,8 +7,8 @@ selectRows(xl){
             if A_Index > 1
             {   
                 nCheckbox++
-                rText := xl.Range("A" . A_Index).Value  
-                Gui, Add, Checkbox, checked vselectRow%A_Index%, Row &%A_Index%: %rText% ; Note that the output variables will be numbered from 2, since the first row is reserved for the colum headers
+                firstColumn := xl.Range("A" . A_Index).Value ; Get bookmark names from column headers
+                Gui, Add, Checkbox, checked vselectRow%A_Index%, Row &%A_Index%: %firstColumn% ; Note that the output variables will be numbered from 2, since the first row is reserved for the colum headers
             }
         }
     Gui, Font, s8 underline
@@ -17,7 +17,7 @@ selectRows(xl){
     Gui, Font
     Gui, Add, Text, x40 gRowOK, OK 
     Gui, Add, Text, x+10 gRowCancel, Cancel 
-    Gui, Show, w250
+    Gui, Show, w150
     WinWaitClose, ahk_class AutoHotkeyGUI 
 
     All:

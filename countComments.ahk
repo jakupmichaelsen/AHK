@@ -2,19 +2,19 @@
 
 oWord := ComObjActive("Word.Application")
 nComments := oWord.ActiveDocument.Comments.Count
-count = 1
+cCount = 1
 #IfWinActive, ahk_class OpusApp
 Tab:: 
-	oWord.ActiveDocument.Comments(count).Edit
-	count++
-	if count > %nComments%
+	oWord.ActiveDocument.Comments(cCount).Edit
+	cCount++
+	if cCount > %nComments%
 		Reload
 	Return
 +Tab:: 
-	count--
-	if count < 1
-		count = %nComments%
-	oWord.ActiveDocument.Comments(count).Edit
+	cCount--
+	if cCount < 1
+		cCount = %nComments%
+	oWord.ActiveDocument.Comments(cCount).Edit
 	Return
 
 
